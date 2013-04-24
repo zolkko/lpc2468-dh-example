@@ -1,8 +1,12 @@
-# Configuring Eclipse IDE for C/C++ Developers
+LPC2468 Example
+===============
+This is a sample code which illustrates how to use lpc2468 i2c0 peripheral in combination with devicehive m2m framework.
 
-1. Install GNU ARM Eclipse support package (http://gnuarmeclipse.sourceforge.net/updates).
-2. Install CDT package.
-3. Install Hardware debug support for eclipse / Device GDB debug package from standard repository.
+Configuring Eclipse IDE for C/C++ Developers
+--------------------------------------------
+
+1. Install Hardware debug support for eclipse package from standard repository.
+2. Install GNU ARM Eclipse support package (http://gnuarmeclipse.sourceforge.net/updates).
 
 In *Debug Configuration...* dialog add a configuration into *GDB Hardware Debugging* category. Then give it
 a name.
@@ -14,12 +18,16 @@ Following steps will be slightly different for different types of JTAG/SWD debug
 For IAR branded JLink I had set **Reset and Delay (seconds)**, set **Halt** and typed in the following script
 as an initialization script.
 
-
-  target remote localhost:2331
-  monitor flash device = LPC2378
-  monitor endian little
-  monitor speed auto
-  monitor reset 0
+```gdb
+target remote localhost:2331
+monitor interface JTAG
+monitor flash device = LPC2468
+monitor endian little
+monitor speed auto
+monitor flash breakpoints = 1
+monitor flash download = 1
+monitor reset 0
+```
 
 
 
