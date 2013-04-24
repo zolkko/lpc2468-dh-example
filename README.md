@@ -27,3 +27,28 @@ as an initialization script.
   Run commands:
   monitor reset
   continue
+
+
+
+To flash firmware and debug it in SRAM the following JLinkGDB script may be used:
+
+[Init script]
+target remote localhost:2331
+monitor flash device = LPC2378
+monitor endian little
+monitor speed auto
+monitor reset 0
+
+
+[Run script]
+monitor reset 0
+monitor memU8  0xe01fc040 = 0x02
+monitor reg cpsr = 0xdf
+monitor reg pc = 0x40000200
+monitor setbp 0x40000200
+continue
+
+
+The script remap reset vector into SRAM and sets program counter
+to _boot symbol location which resist at 0x40000200 address.
+
