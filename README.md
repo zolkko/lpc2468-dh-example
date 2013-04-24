@@ -52,3 +52,21 @@ continue
 The script remap reset vector into SRAM and sets program counter
 to _boot symbol location which resist at 0x40000200 address.
 
+
+
+
+For JLink and STM32 Cortex-M3 you may setuxp initial commands as the following (on Hardware Debug Startup tab):
+
+Uncheck (Reset and Delay, Halt)
+     target remote 127.0.0.1:2331
+     monitor interface SWD
+     monitor endian little
+     monitor speed auto
+     monitor flash device = STM32F103ZE
+     monitor flash breakpoints = 1
+     monitor flash download = 1
+     monitor halt
+Check Set breakpoint at "main"
+In "Run Commands" area type in:
+     monitor reset
+     continue
