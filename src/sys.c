@@ -2,6 +2,12 @@
 #include "lpc24xx.h"
 #include "i2c.h"
 
+/*
+ * The function initializes PLL and sets it as a CPU clock source.
+ * The PLL it self is clocked from external OSC.
+ */
+static void pll_init(void);
+
 void fiq_handler(void)
 {
 	while (1) {
@@ -65,11 +71,7 @@ void undef_handler(void)
 /* Divide CPU clock by (VAL + 1) */
 #define CPU_SetClockDivider(VAL) (CCLKCFG = VAL)
 
-/*
- * The function initializes PLL and sets it as a CPU clock source.
- * The PLL it self is clocked from external OSC.
- */
-inline void init_pll(void)
+void pll_init(void)
 {
 	if (PLL_IsConnected()) {
 		PLL_Enable(); // leave PLL enabled but disconnect it
@@ -92,19 +94,21 @@ inline void init_pll(void)
 	CPU_SetClockDivider(5);
 	while (!PLL_IsLocked());
 
-	volatile unsigned long mval = PLLSTAT & 0x07fff;
-	volatile unsigned long nval = PLLSTAT & 0xff0000;
-	while ((mval != 11) &&  (nval != 0));
+	volatile unsigned long mval;
+	volatile unsigned long nval;
+	do {
+		mval = PLLSTAT & 0x07fff;
+		nval = PLLSTAT & 0xff0000;
+	} while ((mval != 11) &&  (nval != 0));
 
 	PLL_EnableAndConnect();
 	PLL_Apply();
 	while (!PLL_IsConnected());
 }
 
-/* Initializes PLL, set up system interrupts etc */
 void sys_init(void)
 {
-	init_pll();
+	pll_init();
 	SYS_SetFastGPIO();
-	init_i2c();
+	i2c_init();
 }

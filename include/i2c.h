@@ -3,6 +3,13 @@
 #define _i2c_h_
 
 /**
+ * I2C buffers size
+ */
+#define I2C_OUT_BUFFER_SIZE 512
+
+#define I2C_IN_BUFFER_SIZE  512
+
+/**
  * 7 most significant bits indicates slave address.
  */
 #define I2C_SLAVE_ADDRESS 0xA4
@@ -47,12 +54,16 @@
 #define I2CON_START_bm (1 << 5)       // start flag
 #define I2CON_ENABLE_bm  (1 << 6)     // enable module flag
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 
 void i2c_interrupt_handler(void) __attribute__(( interrupt("IRQ"), section(".isr_handlers") ));
 
-void init_i2c(void);
+void i2c_init(void);
 
+#ifdef __cplusplus
 }
+#endif
 
 #endif

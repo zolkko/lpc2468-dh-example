@@ -46,6 +46,9 @@ SECTIONS
 
     . = ALIGN(4);
     _bss_end = . ;
+    
+    . = ALIGN(4);
+    PROVIDE(_heap_start = _bss_end);
 }
 _end = .;
 
@@ -57,3 +60,4 @@ _irq_stack_start   = ALIGN(_fiq_stack_start - 128, 4);
 _svc_stack_start   = ALIGN(_irq_stack_start - 128, 4);
 _sys_stack_start   = ALIGN(_svc_stack_start - 128, 4);
 _usr_stack_start   = ALIGN(_sys_stack_start - 256, 4);
+_heap_end          = _usr_stack_start;
