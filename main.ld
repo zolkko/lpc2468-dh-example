@@ -48,12 +48,13 @@ SECTIONS
     _bss_end = . ;
     
     . = ALIGN(4);
-    PROVIDE(_heap_start = _bss_end);
+    /* PROVIDE(_heap_start = _bss_end); */
+    _heap_start = ALIGN(_bss_end + 1, 4);
 }
 _end = .;
 
 /* define stack positions */
-_undef_stack_start = ORIGIN(ram) + LENGTH(ram);
+_undef_stack_start = ALIGN(ORIGIN(ram) + LENGTH(ram), 4);
 _abort_stack_start = ALIGN(_undef_stack_start - 8, 4);
 _fiq_stack_start   = ALIGN(_abort_stack_start - 8, 4);
 _irq_stack_start   = ALIGN(_fiq_stack_start - 128, 4);

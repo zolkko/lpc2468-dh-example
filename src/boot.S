@@ -96,6 +96,17 @@ bss_clear_loop:
     strlo r0, [r1], #4
     blo   bss_clear_loop
 
+    /* test stack variables */
+    /*
+    ldr  r0, =0x01
+    push {r0}
+    ldr  r0, =0x02
+    push {r0}
+    ldr  r0, =0x03
+    pop  {r0}
+    pop  {r0}
+    */
+
     bl   sys_init
 
     ldr  r0, usr_stack_addr
@@ -144,6 +155,9 @@ bss_start_addr:
 
 bss_end_addr:
     .word _bss_end
+
+heap_start_addr:
+    .word _heap_start
 
     .endfunc
 .end

@@ -210,19 +210,6 @@
 		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.debug.968810320;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.debug.968810320.;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.assembler.debug.415853321;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.assembler.base.input.1345515792">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.release.838289839;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.release.838289839.;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.assembler.release.28426511;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.assembler.base.input.226916897">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCManagedMakePerProjectProfileC"/>
-			<profile id="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCManagedMakePerProjectProfileC">
-				<buildOutputProvider>
-					<openAction enabled="true" filePath=""/>
-					<parser enabled="true"/>
-				</buildOutputProvider>
-				<scannerInfoProvider id="specsFile">
-					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="/Users/zolkko/arm-cs-tools/bin/arm-none-eabi-gcc" useDefault="true"/>
-					<parser enabled="true"/>
-				</scannerInfoProvider>
-			</profile>
-		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.release.838289839;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.release.838289839.;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.cpp.compiler.release.1793231229;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.cpp.compiler.base.input.1894466642">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCManagedMakePerProjectProfileCPP"/>
 			<profile id="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCManagedMakePerProjectProfileCPP">
@@ -232,6 +219,19 @@
 				</buildOutputProvider>
 				<scannerInfoProvider id="specsFile">
 					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.cpp" command="/Users/zolkko/arm-cs-tools/bin/arm-none-eabi-g++" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.release.838289839;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.release.838289839.;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.elf.assembler.release.28426511;org.eclipse.cdt.cross.arm.gnu.sourcery.macosx.assembler.base.input.226916897">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCManagedMakePerProjectProfileC"/>
+			<profile id="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCManagedMakePerProjectProfileC">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD ${plugin_state_location}/specs.c" command="/Users/zolkko/arm-cs-tools/bin/arm-none-eabi-gcc" useDefault="true"/>
 					<parser enabled="true"/>
 				</scannerInfoProvider>
 			</profile>

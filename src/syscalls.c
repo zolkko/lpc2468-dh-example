@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <sys/types.h>
 
-extern unsigned char * _heap_start;
+extern int _heap_start;
 
 caddr_t _sbrk ( int incr )
 {
@@ -16,10 +16,9 @@ caddr_t _sbrk ( int incr )
   unsigned char *prev_heap;
 
   if (heap == NULL) {
-    heap = _heap_start;
+    heap = (unsigned char *)&_heap_start;
   }
   prev_heap = heap;
-  /* check removed to show basic approach */
 
   heap += incr;
 

@@ -48,11 +48,11 @@
 /**
  * I2CONSET and I2CONCLR bit masks.
  */
-#define I2CON_ACK_bm  (1 << 2)        // acknowledge flag
-#define I2CON_SINTERRUPT_bm  (1 << 3) // interrupt flag
-#define I2CON_STOP_bm (1 << 4)        // stop flag
-#define I2CON_START_bm (1 << 5)       // start flag
-#define I2CON_ENABLE_bm  (1 << 6)     // enable module flag
+#define I2CON_ACK_bm  (1 << 2)   // acknowledge flag
+#define I2CON_SINT_bm (1 << 3)   // interrupt flag
+#define I2CON_STOP_bm (1 << 4)   // stop flag
+#define I2CON_START_bm (1 << 5)  // start flag
+#define I2CON_ENABLE_bm (1 << 6) // enable module flag
 
 #ifdef __cplusplus
 extern "C" {

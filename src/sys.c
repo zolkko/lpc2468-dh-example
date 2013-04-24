@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdint.h>
 #include "sys.h"
 #include "lpc24xx.h"
 #include "i2c.h"
@@ -110,5 +112,5 @@ void sys_init(void)
 {
 	pll_init();
 	SYS_SetFastGPIO();
-	i2c_init();
+	// i2c_init();
 }
