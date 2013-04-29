@@ -1,24 +1,26 @@
 
+#include <stdint.h>
 #include <stdlib.h>
 #include "sys.h"
+#include <lpc24xx.h>
 
 
 int main(void)
 {
-	int * test = malloc(1);
-	*test = 0;
+	uint8_t * a = NULL;
+	uint8_t * b = NULL;
 
-	int * test2 = malloc(1);
-	*test2 = 1;
-	*test = 0xbad0;
-	free(test2);
-	free(test);
-	test = NULL;
-	test2 = NULL;
+	a = (uint8_t *) malloc(sizeof(uint8_t));
+	*a = 0x01;
 
-	// int test = 0;
+	b = (uint8_t *) malloc(sizeof(uint8_t));
+	*b = 0x02;
+
+	free(a);
+	free(b);
+
+	int test = 0;
 	while (1) {
 		test++;
 	}
-	// free(test);
 }

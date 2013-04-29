@@ -1,33 +1,29 @@
 #include "config.h"
-#ifdef HAS_MALLOC
 #include <stdlib.h>
-#endif
 #include <stdint.h>
 #include "cirbuf.h"
 
-#ifdef HAS_MALLOC
 cirbuf_t * cirbuf_new(cirbuf_size_t size)
 {
-	/*cirbuf_t * buf = (cirbuf_t *)malloc(sizeof(cirbuf_size_t));
+	/*cirbuf_t * buf = (cirbuf_t *)malloc(sizeof(cirbuf_t));
 	buf->size = size;
 	buf->ridx = 0;
 	buf->widx = 0;
-	buf->buff = (uint8_t *)malloc(size * sizeof(uint8_t));
-	return buf;*/
-	return NULL;
+	buf->buff = (uint8_t *)malloc(size * sizeof(uint8_t));*/
+	cirbuf_t * buf = NULL;
+	return buf;
 }
 
 void cirbuf_free(cirbuf_t * buf)
 {
-	/*if (buf != NULL) {
+	if (buf != NULL) {
 		if (buf->buff != NULL) {
 			free(buf->buff);
 			buf->buff = NULL;
 		}
 		free(buf);
-	}*/
+	}
 }
-#endif
 
 void cirbuf_init(cirbuf_t * buf, uint8_t * buffer, cirbuf_size_t size)
 {

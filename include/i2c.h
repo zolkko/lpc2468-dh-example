@@ -12,7 +12,7 @@
 /**
  * 7 most significant bits indicates slave address.
  */
-#define I2C_SLAVE_ADDRESS 0xA4
+#define I2C_SLAVE_ADDRESS 0xa5 // 0xA4
 
 /**
  * pinsel1 P0[27]
@@ -32,10 +32,6 @@
 #define I2SCLH_SCLH 0x00000080
 #define I2SCLL_SCLL 0x00000080
 
-/**
- * I2C0 interrupt number
- */
-#define I2C0_INT 9
 
 /**
  * Pin functions
@@ -58,7 +54,7 @@
 extern "C" {
 #endif
 
-void i2c_interrupt_handler(void) __attribute__(( interrupt("IRQ"), section(".isr_handlers") ));
+void i2c_interrupt_handler(void) __attribute__((interrupt("IRQ")));
 
 void i2c_init(void);
 

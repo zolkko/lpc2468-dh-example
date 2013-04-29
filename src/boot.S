@@ -23,7 +23,11 @@ _boot:
     ldr pc, undef_addr
     ldr pc, undef_addr
     nop
-    ldr pc, irq_addr /* [pc, #-48] 0xFFFFFF00 */
+
+	/* ldr pc, irq_addr */
+	ldr pc, [pc, #-0x120]
+
+
     ldr pc, fiq_addr
 
 reset_addr:
@@ -96,21 +100,29 @@ bss_clear_loop:
     strlo r0, [r1], #4
     blo   bss_clear_loop
 
-    /* test stack variables */
     /*
-    ldr  r0, =0x01
-    push {r0}
-    ldr  r0, =0x02
-    push {r0}
-    ldr  r0, =0x03
-    pop  {r0}
-    pop  {r0}
-    */
+     * C constructor and destructor initialization
+     */
+    bl  _init
 
+	/*
+	 * System initialization in system mode.
+	 */
     bl   sys_init
 
+	/*
+	 * Keep interrupt flags state before
+	 * entering USER mode.
+	 */
+	mrs  r1, CPSR
+    and  r2, r1, #I_BIT | F_BIT
+    orr  r2, r2, #MODE_USR
+
+	/*
+	 * Switch to USER mode.
+	 */
     ldr  r0, usr_stack_addr
-    msr  CPSR_c, #MODE_USR | I_BIT | F_BIT
+    msr  CPSR_c, r2
     mov  sp, r0
 
     b    main
