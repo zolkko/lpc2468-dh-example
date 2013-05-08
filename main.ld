@@ -40,12 +40,14 @@ SECTIONS
     .bss (NOLOAD) :
     {
         _bss_start = .;
+        PROVIDE(__bss_start__ = .);
         *(.bss)
         *(COMMON)
     } >ram
 
     . = ALIGN(4);
     _bss_end = . ;
+    PROVIDE(__bss_end__ = .);
     
     . = ALIGN(4);
     /* PROVIDE(_heap_start = _bss_end); */

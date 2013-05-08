@@ -2,6 +2,8 @@
 #ifndef _vic_h_
 #define _vic_h_
 
+#include <stdint.h>
+
 #define CPSR_IRQ_bm 0x00000080
 #define CPSR_FIQ_bm 0x00000040
 

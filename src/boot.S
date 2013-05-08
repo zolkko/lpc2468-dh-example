@@ -1,21 +1,29 @@
-    /* zolkko phdc */
+	/* Boot code for LPC2468-ROM
+	 *
+	 * TODO: initialize user mode stack
+	 * using
+	 *	str REG_SP, [REG_SP, #-4]
+	 *	"ldmdb REG_SP, {sp}^"
+	 * instructions
+	 */
+
     /* PSR mode bits mask */
-    .set  MODE_USR, 0x10
+    .set  MODE_USR, 0x10 /* User mode */
     .set  MODE_FIQ, 0x11
     .set  MODE_IRQ, 0x12
     .set  MODE_SVC, 0x13
     .set  MODE_ABT, 0x17
     .set  MODE_UND, 0x1B
-    .set  MODE_SYS, 0x1F
+    .set  MODE_SYS, 0x1F /* Supervisor mode */
 
     /* disable IRQ and FIQ PSR bit mask */
     .set  I_BIT, 0x80
     .set  F_BIT, 0x40
 
-    .section .isr_vectors, "ax"
+	.section .isr_vector, "ax"
     .align  2
     .global _boot
-    .func   _boot
+    .func _boot
 _boot:
     ldr pc, reset_addr
     ldr pc, undef_addr
@@ -26,8 +34,6 @@ _boot:
 
 	/* ldr pc, irq_addr */
 	ldr pc, [pc, #-0x120]
-
-
     ldr pc, fiq_addr
 
 reset_addr:
@@ -47,6 +53,36 @@ fiq_addr:
     .word 0
     .endfunc
 
+	/*
+	 * Define stack section
+	 */
+ 	.section .stack
+	.align 2
+ 	.globl __StackTop
+ 	.globl __StackLimit
+__StackLimit:
+	.space 0xc00
+	.size  __StackLimit, . - __StackLimit
+__StackTop:
+	.size  __StackTop, . - __StackTop
+
+	/*
+	 * Define heap section
+	 */
+ 	.section .heap
+ 	.align 3
+	.equ   Heap_Size, __heap_size
+	.globl __HeapBase
+	.globl __HeapLimit
+__HeapBase:
+	.space 0xc00
+	.size  __HeapBase, . - __HeapBase
+__HeapLimit:
+	.size    __HeapLimit, . - __HeapLimit
+
+	/*
+	 * Reset handler
+	 */
     .section .isr_handlers, "ax"
     .global reset_handler
     .func reset_handler
@@ -101,9 +137,10 @@ bss_clear_loop:
     blo   bss_clear_loop
 
     /*
-     * C constructor and destructor initialization
+     * Initialize libc infrastructure
+     * bl  <__register_exitproc>
      */
-    bl  _init
+ 	bl	__libc_init_array
 
 	/*
 	 * System initialization in system mode.
@@ -126,6 +163,8 @@ bss_clear_loop:
     mov  sp, r0
 
     b    main
+
+    b    exit
 
     .word 0
 
@@ -154,22 +193,19 @@ boot_addr:
     .word _boot
 
 data_start_addr:
-    .word _data
+    .word __data_start__
 
 data_end_addr:
-    .word _edata
+    .word __data_end__
 
 text_end_addr:
-    .word _etext
+    .word __etext
 
 bss_start_addr:
-    .word _bss_start
+    .word __bss_start__
 
 bss_end_addr:
-    .word _bss_end
-
-heap_start_addr:
-    .word _heap_start
+    .word __bss_end__
 
     .endfunc
 .end

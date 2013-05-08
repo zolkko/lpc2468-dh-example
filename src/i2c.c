@@ -18,7 +18,6 @@ static int32_t index = -1;
  */
 void i2c_interrupt_handler(void)
 {
-	uint8_t data;
 	uint8_t status = I20STAT;
 	switch (status) {
 		//
