@@ -47,6 +47,11 @@ uint8_t cirbuf_is_empty(const cirbuf_t * buf);
  */
 cirbuf_size_t cirbuf_length(const cirbuf_t * buf);
 
+/*
+ * Returns 0 if buffer will be in overrun mode
+ */
+uint8_t cirbuf_can_write(const cirbuf_t * buf);
+
 #ifdef __cplusplus
 }
 #endif

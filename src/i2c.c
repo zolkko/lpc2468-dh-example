@@ -5,19 +5,18 @@
 #include "lpc24xx.h"
 #include "i2c.h"
 #include "vic.h"
-
+#include "cirbuf.h"
 
 #define BUF_SIZE 10
 
-static uint8_t  buffer[BUF_SIZE];
-
-static int32_t index = -1;
+static cirbuf_t * buffer;
 
 /**
  * As described in LPC24XX user manual, page 596. (UM10237)
  */
 void i2c_interrupt_handler(void)
 {
+	uint8_t value;
 	uint8_t status = I20STAT;
 	switch (status) {
 		//
@@ -32,7 +31,7 @@ void i2c_interrupt_handler(void)
 			// ACK has been returned.
 			//
 			// Data byte will be received and ACK will be returned.
-			if (index < (BUF_SIZE - 1)) {
+			if (cirbuf_can_write(buffer)) {
 				I20CONCLR = I2CON_STOP_bm | I2CON_SINT_bm;
 				I20CONSET = I2CON_ACK_bm;
 			} else {
@@ -57,14 +56,10 @@ void i2c_interrupt_handler(void)
 		case 0x90:
 			// Previously addressed with general call; DATA byte has been received;
 			// ACK has been returned.
-
-			if (index < (BUF_SIZE - 1)) {
-				// Data byte will be received and ACK will be returned
-				buffer[++index] = I20DAT;
+			if (cirbuf_write(buffer, I20DAT)) {
 				I20CONCLR = I2CON_STOP_bm | I2CON_SINT_bm;
 				I20CONSET = I2CON_ACK_bm;
 			} else {
-				buffer[index] = I20DAT;
 				I20CONCLR = I2CON_STOP_bm | I2CON_SINT_bm | I2CON_ACK_bm;
 			}
 			break;
@@ -103,16 +98,12 @@ void i2c_interrupt_handler(void)
 			// Arbitration lost in SLA+R/W as master; Own SLA+R has been received,
 			// ACK has been returned.
 		case 0xb8:
-			if (index > 0) {
-				I20DAT = buffer[index--];
+			if (!cirbuf_read(buffer, &value)) {
+				I20DAT = value;
 				I20CONCLR = I2CON_STOP_bm | I2CON_SINT_bm;
 				I20CONSET = I2CON_ACK_bm;
-			} else if (index == 0) {
-				I20DAT = buffer[index--];
-				I20CONCLR = I2CON_STOP_bm | I2CON_SINT_bm | I2CON_ACK_bm;
 			} else {
-				index = -1;
-				I20DAT = 0x00;
+				I20DAT = UINT8_C(0x00);
 				I20CONCLR = I2CON_STOP_bm | I2CON_SINT_bm | I2CON_ACK_bm;
 			}
 			break;
@@ -140,12 +131,20 @@ void i2c_interrupt_handler(void)
 	VICVectAddr = 0; // acknowledge interrupt
 }
 
+void i2c_close(void)
+{
+	cirbuf_free(buffer);
+	buffer = NULL;
+}
+
 /**
  * Initializes i2c module in slave mode.
  * Rate settings do not affect I2C module in slave mode.
  */
 void i2c_init(void)
 {
+	buffer = cirbuf_new(BUF_SIZE);
+
 	// configure corresponding pins to act as alternative function.
 	PINSEL1 &= ~(PIN_SDA0_bm | PIN_SCL0_bm);
 	PINSEL1 |= (PIN_FUNC_ALT1 << PIN_SDA0_bp) | (PIN_FUNC_ALT1 << PIN_SCL0_bp);
@@ -153,7 +152,7 @@ void i2c_init(void)
 	// Set slave address to monitor
 	I20CONCLR = I2CON_ACK_bm | I2CON_SINT_bm | I2CON_START_bm | I2CON_STOP_bm | I2CON_ENABLE_bm;
 
-	irq_install(I2C0_INT, (uint32_t *)i2c_interrupt_handler, VIC_PRIORITY_HI);
+	irq_install(I2C0_INT, (void *)i2c_interrupt_handler, VIC_PRIORITY_HI);
 
 	// Set slave address. 7 bit MSB.
 	I20ADR = I2C_SLAVE_ADDRESS;

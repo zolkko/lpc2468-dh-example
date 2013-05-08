@@ -58,6 +58,8 @@ void i2c_interrupt_handler(void) __attribute__((interrupt("IRQ")));
 
 void i2c_init(void);
 
+void i2c_close(void);
+
 #ifdef __cplusplus
 }
 #endif

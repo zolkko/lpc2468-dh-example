@@ -5,12 +5,11 @@
 
 cirbuf_t * cirbuf_new(cirbuf_size_t size)
 {
-	/*cirbuf_t * buf = (cirbuf_t *)malloc(sizeof(cirbuf_t));
+	cirbuf_t * buf = (cirbuf_t *)malloc(sizeof(cirbuf_t));
 	buf->size = size;
 	buf->ridx = 0;
 	buf->widx = 0;
-	buf->buff = (uint8_t *)malloc(size * sizeof(uint8_t));*/
-	cirbuf_t * buf = NULL;
+	buf->buff = (uint8_t *)malloc(size * sizeof(uint8_t));
 	return buf;
 }
 
@@ -87,4 +86,9 @@ cirbuf_size_t cirbuf_length(const cirbuf_t * buf)
 	} else {
 		return (buf->ridx - buf->widx) + (buf->size - buf->ridx);
 	}
+}
+
+uint8_t cirbuf_can_write(const cirbuf_t * buf)
+{
+	return cirbuf_length(buf) < buf->size;
 }
