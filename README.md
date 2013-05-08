@@ -16,7 +16,7 @@ First of all you need to install following additional software:
 Open __Run/Debugging configuration...__ dialog. Here you need to add additional debugging configuration
 in __GDB Hardware Debugging__ category. Give it a name. On the __Debugger__ tab type in gdb location which comes with your toolchain.
 In my case it was ~/gcc-arm-none-eabi/bin/arm-none-eabi-gdb. Uncheck __Use remote target__ if your debugger is connected
-to your local machine. Then,fFor IAR branded J-Link, I had set __Reset and Delay (seconds)__, set __Halt__ and typed in the following script
+to your local machine. Then, for IAR branded J-Link, I had set __Reset and Delay (seconds)__, set __Halt__ and typed in the following script
 as an initialization script.
 
 ```gdb
