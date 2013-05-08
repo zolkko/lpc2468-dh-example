@@ -49,7 +49,6 @@ continue
 ```
 
 Here **reg cpsr = 0xdf** and **reg pc = 0x40000200** monitor command are invoked. These commands remap interrupt vector
-from 0x4000000 SRAM location to 0x0 address.
-
-The script remap reset vector into SRAM and sets program counter
-to _boot symbol location which resist at 0x40000200 address.
+from 0x4000000 SRAM location to 0x0 address and then jump to the reset_vector procedure (which address is 0x40000200).
+You may need to change reset_vector address to some different value. To find out reset vector address you can look for it in lpc2468-dh.lst file
+which is generated (by default) by Eclipse on each build run.
